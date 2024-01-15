@@ -31,6 +31,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
+        jwt = authHeader.substring(7);
+
+        
+
     }
 
 }
