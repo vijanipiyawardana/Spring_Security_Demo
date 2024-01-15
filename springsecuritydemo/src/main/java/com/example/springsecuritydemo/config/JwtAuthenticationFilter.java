@@ -1,5 +1,6 @@
 package com.example.springsecuritydemo.config;
 
+import com.example.springsecuritydemo.service.JwtService;
 import jakarta.annotation.Nullable;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -16,6 +17,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
+    private final JwtService jwtService;
     @Override
     protected void doFilterInternal(
             @NonNull HttpServletRequest request,
@@ -25,6 +27,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         final String authHeader = request.getHeader("Authorization");
         final String jwt;
+        final String userEmail;
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
@@ -33,7 +36,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         jwt = authHeader.substring(7);
 
-        
+        userEmail = jwtService.extractUserEmail(jwt);
+
 
     }
 
