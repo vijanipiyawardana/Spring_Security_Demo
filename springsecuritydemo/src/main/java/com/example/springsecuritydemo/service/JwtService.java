@@ -3,9 +3,12 @@ package com.example.springsecuritydemo.service;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.util.Date;
 import java.util.HashMap;
@@ -15,7 +18,7 @@ import java.util.function.Function;
 @Service
 public class JwtService {
 
-    private static final String SECRET_KEY = "f85IhI7qFykaFKkVm2Pbq61YAo+RVnn6EqKEIPOxXABfl73nVOpQPo5UhrDYuFlv";
+    private static final String SECRET_KEY = "c3ByaW5nIHNlY3VyaXR5IGRlbW8gc2VjcmV0IGtleSB2aWphbmkgcGl5YXdhcmRhbmE=";
 
     public String generateToken(UserDetails userDetails) {
         return generateToken(new HashMap<>(), userDetails);
@@ -64,9 +67,9 @@ public class JwtService {
                 .getPayload();
     }
 
-    private SecretKeySpec getSignInKey() {
-        SignatureAlgorithm sa = SignatureAlgorithm.HS256;
-        return new SecretKeySpec(SECRET_KEY.getBytes(), sa.getJcaName());
+    private SecretKey getSignInKey() {
+        byte[] keyBytes= Decoders.BASE64.decode(SECRET_KEY);
+        return Keys.hmacShaKeyFor(keyBytes);
     }
 
 }
