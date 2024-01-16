@@ -30,7 +30,7 @@ public class SecurityConfig {
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
-        
+
 //        http
 //                .csrf()
 //                .disable()
